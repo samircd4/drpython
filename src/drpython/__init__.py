@@ -7,4 +7,4 @@ __all__ = [
     "EmailNotifier", "notify_email",
     "add_to_csv", "add_to_excel", "add_to_json"
 ]
-__version__ = "0.1.7"
+__version__ = "0.3.1"

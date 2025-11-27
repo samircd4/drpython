@@ -1,6 +1,6 @@
 [project]
 name = "drpython"
-version = "0.1.7"
+version = "0.3.1"
 description = "Modular notifications: drpython.telegram, drpython.email & drpython.database"
 readme = "README.md"
 authors = [{ name = "samircd4", email = "samircd4@gmail.com" }]
