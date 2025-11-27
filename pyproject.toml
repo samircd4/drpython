@@ -1,10 +1,10 @@
 [project]
 name = "drpython"
-version = "0.1.2"
-description = "Modular notifications: drpython.telegram & drpython.email"
+version = "0.1.7"
+description = "Modular notifications: drpython.telegram, drpython.email & drpython.database"
 readme = "README.md"
 authors = [{ name = "samircd4", email = "samircd4@gmail.com" }]
-requires-python = ">=3.12"
+requires-python = ">=3.10"
 license = { text = "MIT" }
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -14,6 +14,8 @@ classifiers = [
     "Topic :: Communications :: Email",
 ]
 dependencies = [
+    "openpyxl>=3.1.5",
+    "pandas>=2.3.3",
     "python-dotenv>=1.2.1",
     "requests>=2.31.0,<3.0.0",
 ]
@@ -23,8 +25,36 @@ dev = [
     "black>=25.11.0",
     "pytest>=9.0.1",
     "ruff>=0.14.4",
+    "build>=1.2.1",
+    "twine>=5.0.0",
 ]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build]
+exclude = [
+    ".env",
+    "tests/**",
+    ".pytest_cache/**",
+    "test.py",
+    "test_lib/**",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/drpython"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/drpython/**",
+    "pyproject.toml",
+    "README.md",
+]
+
+[dependency-groups]
+dev = [
+    "build>=1.3.0",
+    "pytest>=9.0.1",
+    "twine>=6.2.0",
+]

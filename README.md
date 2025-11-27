@@ -2,9 +2,11 @@
 
 Modular notifications for Python projects: simple helpers for Telegram bots and SMTP email.
 
-This library provides two small utilities:
+This library provides three utilities:
+
 - `drpython.telegram`: send messages via a Telegram bot.
 - `drpython.email`: send emails via an SMTP server.
+- `drpython.database`: append-friendly helpers for CSV, Excel (.xlsx), and JSON.
 
 Both modules expose a light class (`TelegramNotifier`, `EmailNotifier`) and a convenience function (`notify_telegram`, `notify_email`).
 
@@ -34,6 +36,7 @@ load_dotenv()  # Only needed if using a .env file
 ### Telegram
 
 Environment variables used:
+
 - `DRPYTHON_TELEGRAM_TOKEN`
 - `DRPYTHON_CHAT_ID`
 
@@ -59,6 +62,7 @@ print(ok)
 ### Email (SMTP)
 
 Environment variables used:
+
 - `DRPYTHON_SMTP_HOST` (e.g., `smtp.gmail.com`)
 - `DRPYTHON_SMTP_PORT` (default `587`)
 - `DRPYTHON_SMTP_USER`
@@ -77,6 +81,36 @@ ok = notify_email(
     html=False,  # set True to send HTML
 )
 print(ok)
+```
+
+### Database (CSV, Excel, JSON)
+
+Convenience functions to append or create tabular data files from a list of dictionaries. Dependencies `pandas` and `openpyxl` are included.
+
+Functions:
+
+- `add_to_csv(data, filename, *, encoding='utf-8', index=False, append=True, **kwargs)`
+- `add_to_excel(data, filename, *, sheet_name='Sheet1', index=False, append=True, **kwargs)`
+- `add_to_json(data, filename, *, append=True, indent=2, **kwargs)`
+
+Example:
+
+```python
+from drpython.database import add_to_csv, add_to_excel, add_to_json
+
+data = [
+    {"id": 1, "name": "Alice", "score": 95},
+    {"id": 2, "name": "Bob",   "score": 87},
+]
+
+# CSV: appends if file exists, otherwise creates; controls header/index
+add_to_csv(data, "users.csv", append=True, index=False)
+
+# Excel (.xlsx): appends to an existing sheet starting at next row; creates otherwise
+add_to_excel(data, "users.xlsx", sheet_name="Users", append=True, index=False)
+
+# JSON: writes a proper JSON array; appends safely if file exists and is valid JSON
+add_to_json(data, "users.json", append=True, indent=2)
 ```
 
 Or pass credentials explicitly and use the class:
@@ -135,4 +169,5 @@ Never commit real tokens or passwords to source control.
 - Commands above are shown for Windows PowerShell.
 - `notify_telegram` uses `requests.get` and returns `True/False` based on Telegram API response.
 - `notify_email` uses `smtplib.SMTP` and returns `True/False` based on send success.
+- Data helpers rely on `pandas` (and `openpyxl` for Excel) which are installed automatically.
 - If you encounter build/publish issues, ensure your `pyproject.toml` includes a `src/drpython` wheel target and excludes `.env` from distributions.
